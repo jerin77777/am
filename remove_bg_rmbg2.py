@@ -22,6 +22,15 @@ def huggingface_login(token=None):
         return False
 
     if not token:
+        # Simple fallback to load .env if python-dotenv is not installed
+        if not os.environ.get("HF_TOKEN") and os.path.exists(".env"):
+            with open(".env", "r") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        os.environ.setdefault(k.strip(), v.strip().strip("'\""))
+
         token = os.environ.get("HF_TOKEN") or os.environ.get("HUGGING_FACE_HUB_TOKEN")
 
     def _already_logged_in():
