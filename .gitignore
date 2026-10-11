@@ -25,3 +25,9 @@ dist-ssr
 .env
 *.env
 
+# Firebase
+.firebase
+
+# Backup Assets
+backup_frames/
+
