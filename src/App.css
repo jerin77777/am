@@ -287,6 +287,7 @@
     font-size: clamp(1.2rem, 5.6vw, 1.55rem);
     letter-spacing: 0.16em;
     white-space: nowrap;
+    color: #0f2438;
   }
 
   .van-assembly-subtitle {
@@ -294,15 +295,35 @@
     letter-spacing: 0.16em;
     white-space: nowrap;
     margin: 6px 0 0 0;
+    color: #8fa0b5;
   }
 
   .van-callout-card {
     gap: 10px;
   }
 
+  .van-callout-card.van-callout-left {
+    flex-direction: row-reverse;
+  }
+
+  .van-callout-card.van-callout-left .van-callout-text {
+    text-align: left;
+  }
+
+  .van-callout-card.van-callout-left .van-callout-icon {
+    transform: translateX(-10px);
+  }
+
+  .van-callout-card.van-callout-left:hover .van-callout-icon {
+    transform: translateX(-10px) scale(1.08);
+  }
+
   .van-callout-icon {
     width: 42px;
     height: 42px;
+    border: 1.5px solid #cbd5e1;
+    color: #1e293b;
+    box-shadow: 0 4px 14px rgba(15, 36, 56, 0.06);
   }
 
   .van-callout-icon svg {
@@ -312,13 +333,27 @@
 
   .van-callout-title {
     font-size: 0.76rem;
+    font-weight: 700;
     letter-spacing: 0.10em;
+    color: #0f2438;
   }
 
   .van-callout-desc {
     font-size: 0.68rem;
-    max-width: 155px;
+    max-width: 145px;
     line-height: 1.3;
+    color: #64748b;
+  }
+
+  .van-line-paint,
+  .van-line-exterior {
+    stroke: #94a3b8;
+  }
+
+  .van-dot-paint,
+  .van-dot-exterior {
+    stroke: #94a3b8;
+    fill: #ffffff;
   }
 }
 
@@ -520,11 +555,12 @@ section {
 .roofs-backdrop-svg {
   position: absolute;
   top: 0;
-  right: 0;
+  left: 0;
   width: 65vw;
   height: 100vh;
   pointer-events: none;
   z-index: 1;
+  transform: scaleX(-1);
 }
 
 .roofs-content-grid {
@@ -534,14 +570,15 @@ section {
   width: 90%;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 1.05fr 1fr;
+  grid-template-columns: 1fr 1.05fr;
   align-items: center;
   gap: 3.5rem;
   box-sizing: border-box;
 }
 
-/* Left Column Styling */
+/* Text Column: Heading, Subtext & Accordion (Placed on right side on desktop) */
 .roofs-left-col {
+  order: 2;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -567,9 +604,9 @@ section {
 }
 
 .roofs-heading {
-  font-size: clamp(3.2rem, 5.2vw, 4.8rem);
+  font-size: clamp(2.5rem, 4vw, 3.8rem);
   font-weight: 800;
-  line-height: 1.05;
+  line-height: 1.06;
   letter-spacing: -0.035em;
   margin: 0;
 }
@@ -710,8 +747,9 @@ section {
   max-width: 490px;
 }
 
-/* Right Column: Roof Visual Image Card */
+/* Image Column: Roof Visual Image Card (Placed on left side on desktop) */
 .roofs-right-col {
+  order: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -746,7 +784,11 @@ section {
     padding: 1.5rem 0;
   }
   .roofs-left-col {
+    order: 1;
     max-width: 100%;
+  }
+  .roofs-right-col {
+    order: 2;
   }
 }
 
@@ -1144,10 +1186,10 @@ section {
   .roofs-heading,
   .seats-heading {
     order: 2;
-    font-size: clamp(2.6rem, 10.5vw, 3.25rem);
-    line-height: 1.02;
-    letter-spacing: -0.04em;
-    margin: 0 0 0.85rem 0;
+    font-size: clamp(1.35rem, 5.2vw, 1.7rem);
+    line-height: 1.1;
+    letter-spacing: -0.025em;
+    margin: 0 0 0.65rem 0;
     font-weight: 800;
     text-align: left;
     width: 100%;
@@ -1185,7 +1227,17 @@ section {
   }
 
   /* 4. Canvas Image Card (Between subtext and accordion) */
-  .roofs-right-col,
+  .roofs-right-col {
+    order: 4;
+    width: 100%;
+    height: auto;
+    margin: 0 0 1.15rem 0;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    transform: none;
+  }
+
   .seats-right-col {
     order: 4;
     width: 100%;
@@ -1196,8 +1248,7 @@ section {
     position: relative;
   }
 
-  .roofs-card-wrapper,
-  .seats-card-wrapper {
+  .roofs-card-wrapper {
     width: 100%;
     aspect-ratio: 16 / 10.5;
     border-radius: 20px;
@@ -1205,14 +1256,18 @@ section {
     box-shadow: 0 14px 34px -8px rgba(15, 23, 42, 0.16), 0 4px 14px -2px rgba(0, 0, 0, 0.08);
     position: relative;
     border: 1px solid #f1f5f9;
-  }
-
-  .roofs-card-wrapper {
     background: #0f172a;
   }
 
   .seats-card-wrapper {
-    background: #ffffff;
+    width: 100%;
+    aspect-ratio: 16 / 10.5;
+    border-radius: 0;
+    overflow: visible;
+    box-shadow: none;
+    border: none;
+    background: transparent;
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1230,15 +1285,12 @@ section {
     height: 100%;
     max-height: 100%;
     object-fit: contain;
-    border-radius: 20px;
-    filter: drop-shadow(0 12px 20px rgba(15, 23, 42, 0.10));
+    border-radius: 0;
+    filter: none;
   }
 
   .seat-ground-shadow {
-    bottom: 4%;
-    width: 70%;
-    height: 24px;
-    filter: blur(8px);
+    display: none;
   }
 
   /* 5. Accordion List */
@@ -1687,34 +1739,6 @@ section {
   user-select: none;
   -webkit-user-drag: none;
   filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.12)) drop-shadow(0 2px 4px rgba(0, 0, 0, 0.16));
-}
-
-.loading-progress-bar-container {
-  width: clamp(140px, 20vw, 220px);
-  height: 4px;
-  background: rgba(15, 23, 42, 0.08);
-  border-radius: 9999px;
-  overflow: hidden;
-  margin-top: 28px;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.06);
-}
-
-.loading-progress-bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #0284c7, #38bdf8);
-  border-radius: 9999px;
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 0 8px rgba(2, 132, 199, 0.5);
-}
-
-.loading-progress-text {
-  margin-top: 10px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: #94a3b8;
-  font-family: inherit;
-  user-select: none;
 }
 
 @keyframes loadingPulse {

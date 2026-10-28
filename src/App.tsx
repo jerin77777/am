@@ -24,7 +24,7 @@ import {
 } from './constants';
 
 function App() {
-  const { isLoaded, loadProgress, assets } = useAssetPreloader();
+  const { isLoaded, assets } = useAssetPreloader();
   const {
     wheelImages,
     assemblyImages,
@@ -901,7 +901,7 @@ function App() {
   };
 
   if (!isLoaded) {
-    return <LoadingScreen progress={loadProgress} />;
+    return <LoadingScreen />;
   }
 
   return (

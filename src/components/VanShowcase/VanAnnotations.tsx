@@ -52,9 +52,9 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
       {/* SVG Leader Lines & Anchor Rings */}
       {layout && (
         <svg className="van-annotations-svg" viewBox={`0 0 ${window.innerWidth} ${window.innerHeight}`}>
-          {/* Custom Paints Leader Line & Dot (Top/Left) */}
+          {/* Exterior Upgrades Leader Line & Dot (Top/Left) */}
           <path
-            className="van-line-paint"
+            className="van-line-exterior"
             d={layout.leftPath}
             fill="none"
             stroke="#94a3b8"
@@ -63,7 +63,7 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
             strokeLinejoin="round"
           />
           <circle
-            className="van-dot-paint"
+            className="van-dot-exterior"
             cx={layout.roofTarget.x}
             cy={layout.roofTarget.y}
             r="4.5"
@@ -72,9 +72,9 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
             strokeWidth="1.5"
           />
 
-          {/* Exterior Upgrades Leader Line & Dot (Bottom/Right) */}
+          {/* Custom Paints Leader Line & Dot (Bottom/Right) */}
           <path
-            className="van-line-exterior"
+            className="van-line-paint"
             d={layout.rightPath}
             fill="none"
             stroke="#94a3b8"
@@ -83,7 +83,7 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
             strokeLinejoin="round"
           />
           <circle
-            className="van-dot-exterior"
+            className="van-dot-paint"
             cx={layout.exteriorTarget.x}
             cy={layout.exteriorTarget.y}
             r="4.5"
@@ -94,13 +94,49 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
         </svg>
       )}
 
-      {/* Left Callout Card: Custom Paints (Appears when paints begin to change) */}
+      {/* Left Callout Card: Exterior Upgrades (Appears during assembly frames) */}
       {layout && (
         <div
           ref={leftCardRef}
-          className="van-callout-card van-callout-left van-callout-paint"
+          className="van-callout-card van-callout-left van-callout-exterior"
           style={{
-            transform: `translate3d(${layout.leftCardPos.left}px, ${layout.leftCardPos.top}px, 0) scale(calc(0.92 + 0.08 * var(--paint-alpha, 0)))`,
+            transform: `translate3d(${layout.leftCardPos.left}px, ${layout.leftCardPos.top}px, 0) scale(calc(0.92 + 0.08 * var(--exterior-alpha, 0)))`,
+          }}
+        >
+          <div className="van-callout-icon">
+            {/* Exterior Vehicle Upgrade Icon */}
+            <svg
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.2-1.5.6L1.4 10.1C1.2 10.4 1 10.8 1 11.2V16c0 .6.4 1 1 1h2" />
+              <circle cx="7" cy="17" r="2.5" />
+              <circle cx="17" cy="17" r="2.5" />
+              <path d="M5 11l2.5-3.5h4.5" />
+            </svg>
+          </div>
+          <div className="van-callout-text">
+            <h4 className="van-callout-title">EXTERIOR UPGRADES</h4>
+            <p className="van-callout-desc">
+              Add accessories, trims, graphics and more for a unique look.
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Right Callout Card: Custom Paints (Appears when paints begin to change) */}
+      {layout && (
+        <div
+          ref={rightCardRef}
+          className="van-callout-card van-callout-right van-callout-paint"
+          style={{
+            transform: `translate3d(${layout.rightCardPos.left}px, ${layout.rightCardPos.top}px, 0) scale(calc(0.92 + 0.08 * var(--paint-alpha, 0)))`,
           }}
         >
           <div className="van-callout-icon">
@@ -128,42 +164,6 @@ export const VanAnnotations = forwardRef<HTMLDivElement, VanAnnotationsProps>((_
             <h4 className="van-callout-title">CUSTOM PAINTS</h4>
             <p className="van-callout-desc">
               Choose from a range of premium colours or create your own.
-            </p>
-          </div>
-        </div>
-      )}
-
-      {/* Right Callout Card: Exterior Upgrades (Appears when assembly frames play) */}
-      {layout && (
-        <div
-          ref={rightCardRef}
-          className="van-callout-card van-callout-right van-callout-exterior"
-          style={{
-            transform: `translate3d(${layout.rightCardPos.left}px, ${layout.rightCardPos.top}px, 0) scale(calc(0.92 + 0.08 * var(--exterior-alpha, 0)))`,
-          }}
-        >
-          <div className="van-callout-icon">
-            {/* Exterior Vehicle Upgrade Icon */}
-            <svg
-              width="22"
-              height="22"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.8"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.2-1.5.6L1.4 10.1C1.2 10.4 1 10.8 1 11.2V16c0 .6.4 1 1 1h2" />
-              <circle cx="7" cy="17" r="2.5" />
-              <circle cx="17" cy="17" r="2.5" />
-              <path d="M5 11l2.5-3.5h4.5" />
-            </svg>
-          </div>
-          <div className="van-callout-text">
-            <h4 className="van-callout-title">EXTERIOR UPGRADES</h4>
-            <p className="van-callout-desc">
-              Add accessories, trims, graphics and more for a unique look.
             </p>
           </div>
         </div>

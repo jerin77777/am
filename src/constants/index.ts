@@ -39,37 +39,47 @@ export function getVanLayout(width: number, height: number): VanLayout {
     // Position van slightly below vertical center (around 54% screen height)
     const shiftY = (height - destHeight) / 2 + height * 0.035;
 
-    // Target 1: Custom Paints (Moved UP and towards the LEFT along the top roof rail)
+    const iconRadius = 21; // 42px icon circle diameter
+    const bottomIconCenterX = Math.round(width * 0.558);
+
+    // Target 1: Exterior Upgrades (Shifted 40px left along the roof rail)
     const roofTarget = {
-      x: shiftX + destWidth * 0.24,
-      y: shiftY + destHeight * 0.128,
+      x: Math.round(shiftX + destWidth * 0.725) - 40,
+      y: Math.round(shiftY + destHeight * 0.125),
     };
 
-    // Target 2: Exterior Upgrades (Moved DOWN and towards the LEFT along the lower rocker trim)
+    // Target 2: Custom Paints (Lower door sill / rocker trim behind front wheel: ~78.5% width, ~86.5% height)
     const exteriorTarget = {
-      x: shiftX + destWidth * 0.42,
-      y: shiftY + destHeight * 0.835,
+      x: Math.round(shiftX + destWidth * 0.785),
+      y: Math.round(shiftY + destHeight * 0.865),
     };
 
-    // Top Callout Card: Custom Paints (Above the van on the left, clear of header text)
-    const leftCardLeft = Math.max(16, width * 0.05);
-    const leftCardTop = Math.max(115, shiftY - 95);
+    // Top Callout Card: Exterior Upgrades (Moved to the left: text on left, car icon on right)
+    const textWidth = 145;
+    const gap = 10;
+    const leftCardLeft = Math.max(14, Math.round(width * 0.04));
+    const leftCardTop = Math.max(90, Math.round(shiftY - 76));
+    const leftIconCenterY = leftCardTop + 21;
+    const topIconCenterX = leftCardLeft + textWidth + gap + iconRadius - 10;
 
-    // Bottom Callout Card: Exterior Upgrades (Below the van, clear of wheels)
-    const rightCardLeft = Math.max(16, Math.min(width - 235, exteriorTarget.x - 110));
-    const rightCardTop = Math.min(height - 82, shiftY + destHeight * 0.92);
+    // Bottom Callout Card: Custom Paints (Below the van: spray gun icon on left, text on right)
+    const rightCardLeft = Math.max(16, bottomIconCenterX - iconRadius);
+    const rightCardTop = Math.min(height - 75, Math.round(shiftY + destHeight + Math.max(18, height * 0.065)));
 
-    // Top Leader Line (Custom Paints): bent dogleg leader line into top silver roof rail
-    const leftStartX = leftCardLeft + 36;
-    const leftStartY = leftCardTop + 36;
-    const leftTurnX = roofTarget.x - 24;
-    const leftPath = `M ${leftStartX} ${leftStartY} L ${leftTurnX} ${roofTarget.y} L ${roofTarget.x} ${roofTarget.y}`;
+    // Top Leader Line (Exterior Upgrades): Starts directly from icon perimeter,
+    // goes diagonally down-right to the bend, then vertical down into roof target (only one bend)
+    const leftTurn2Y = Math.round(shiftY - 12);
+    const leftAngle = Math.atan2(leftTurn2Y - leftIconCenterY, roofTarget.x - topIconCenterX);
+    const leftStartX = topIconCenterX + Math.round(iconRadius * Math.cos(leftAngle));
+    const leftStartY = leftIconCenterY + Math.round(iconRadius * Math.sin(leftAngle));
+    const leftPath = `M ${leftStartX} ${leftStartY} L ${roofTarget.x} ${leftTurn2Y} L ${roofTarget.x} ${roofTarget.y}`;
 
-    // Bottom Leader Line (Exterior Upgrades): bent dogleg leader line into lower rocker trim
-    const rightStartX = rightCardLeft + 20;
-    const rightStartY = rightCardTop + 4;
-    const rightTurnX = exteriorTarget.x - 24;
-    const rightPath = `M ${rightStartX} ${rightStartY} L ${rightTurnX} ${exteriorTarget.y} L ${exteriorTarget.x} ${exteriorTarget.y}`;
+    // Bottom Leader Line (Custom Paints): Starts at top-right of spray gun icon,
+    // goes diagonally up-right, then vertical up into paint target on body / rocker trim
+    const rightStartX = bottomIconCenterX + 15;
+    const rightStartY = rightCardTop + 2;
+    const rightTurnY = Math.round(shiftY + destHeight + Math.max(8, height * 0.024));
+    const rightPath = `M ${rightStartX} ${rightStartY} L ${exteriorTarget.x} ${rightTurnY} L ${exteriorTarget.x} ${exteriorTarget.y}`;
 
     return {
       isMobile: true,
